@@ -1,0 +1,47 @@
+{% set scene = logic.scene ?? constant(scaffold.abs ~ '::TAG_UNKNOWN') %}
+<a-transfer
+  {% if form.class %}
+    class="{{ form.class }}"
+  {% endif %}
+  :titles="['{{ form.sourceTitle|trans({}, 'twig') }}', '{{ form.targetTitle|trans({}, 'twig') }}']"
+  :operations="['{{ form.sourceOperate|trans({}, 'twig') }}', '{{ form.targetOperate|trans({}, 'twig') }}']"
+  :target-keys="{{ form.targetKeysKey }}"
+  {% if scene == constant(scaffold.abs ~ '::TAG_PERSISTENCE') %}
+    :disabled="(typeof persistenceFieldDisabledNow.{{ form.key }} !== 'undefined') ? (persistenceFieldDisabledNow.{{ form.key }} || {{ form.disabled ? 'true' : 'false' }}) : {{ form.disabled ? 'true' : 'false' }}"
+  {% else %}
+    :disabled="{{ form.disabled ? 'true' : 'false' }}"
+  {% endif %}
+  {% if form.selectedKeysArray is not empty %}
+    :selected-keys="{{ form.selectedKeysKey }}"
+  {% endif %}
+  :render="(record) => record.title"
+  :data-bsw.prop="{{ form.formData }}"
+  {% if form.varNameForMeta %}
+    :data-source="{{ form.varNameForMeta }}"
+  {% else %}
+    :data-source="{{ form.dataSource }}"
+  {% endif %}
+  {% if form.varNameForMetaField %}
+    data-do-dds-field="{{ form.varNameForMetaField }}"
+  {% endif %}
+  {% if form.varNameForChange %}
+    data-do-change-field="{{ form.varNameForChange }}"
+  {% endif %}
+  {% if form.doLogicRoute %}
+    data-do-logic-api="{{ path(form.doLogicRoute, form.doLogicRouteArgs) }}"
+  {% endif %}
+  :show-search="{{ form.showSearch ? 'true' : 'false' }}"
+  :filter-option="{{ form.filterOption }}"
+  :show-select-all="{{ form.showSelectAll ? 'true' : 'false' }}"
+  :list-style="{{ form.listStyle }}"
+  :style="{{ form.style }}"
+  {% if form.change %}
+    @change="((targetKeys, direction, moveKeys) => {this.{{ form.change }}(targetKeys, direction, moveKeys, '{{ form.key }}')})"
+  {% endif %}
+  {{ form.attributes|raw }}
+  {% if not form.vModel %}
+    v-decorator="['{{ form.key }}', { initialValue: {{ form.targetKeysKey }}, rules: {{ form.formRules }} }]"
+  {% else %}
+    v-model="{{ form.vModel }}"
+  {% endif %}
+></a-transfer>

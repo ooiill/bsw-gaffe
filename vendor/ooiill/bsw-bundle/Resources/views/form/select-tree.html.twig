@@ -1,0 +1,49 @@
+{% set initial = (form.value is same as(null)) ? null : ("initialValue: `" ~ form.value ~ "`,") %}
+{% set scene = logic.scene ?? constant(scaffold.abs ~ '::TAG_UNKNOWN') %}
+<a-tree-select
+  {% if form.class %}
+    class="{{ form.class }}"
+  {% endif %}
+  name="{{ form.name }}"
+  :style="{{ form.style }}"
+  {% if scene == constant(scaffold.abs ~ '::TAG_PERSISTENCE') %}
+    :disabled="(typeof persistenceFieldDisabledNow.{{ form.key }} !== 'undefined') ? (persistenceFieldDisabledNow.{{ form.key }} || {{ form.disabled ? 'true' : 'false' }}) : {{ form.disabled ? 'true' : 'false' }}"
+  {% else %}
+    :disabled="{{ form.disabled ? 'true' : 'false' }}"
+  {% endif %}
+  size="{{ form.size }}"
+  :allow-clear="{{ form.allowClear ? 'true' : 'false' }}"
+  :label-in-value="{{ form.labelInValue ? 'true' : 'false' }}"
+  :show-search="{{ form.showSearch ? 'true' : 'false' }}"
+  tree-node-filter-prop="{{ form.optionFilterProp }}"
+  :show-arrow="{{ form.showArrow ? 'true' : 'false' }}"
+  :show-checked-strategy="{{ form.showCheckedStrategy }}"
+  :dropdown-match-select-width="{{ form.dropdownEqualWidth ? 'true' : 'false' }}"
+  :dropdown-style="{{ form.dropdownStyle }}"
+  {% if form.varNameForMeta %}
+    :tree-data="{{ form.varNameForMeta }}"
+  {% else %}
+    :tree-data="{{ form.treeData }}"
+  {% endif %}
+  {% if form.varNameForMetaField %}
+    data-do-dds-field="{{ form.varNameForMetaField }}"
+  {% endif %}
+  {% if form.varNameForChange %}
+    data-do-change-field="{{ form.varNameForChange }}"
+  {% endif %}
+  :data-bsw.prop="{{ form.formData }}"
+  {% if form.doLogicRoute %}
+    data-do-logic-api="{{ path(form.doLogicRoute, form.doLogicRouteArgs) }}"
+  {% endif %}
+  {% if form.change %}
+    @change="((value) => {this.{{ form.change }}(value, '{{ form.key }}')})"
+  {% endif %}
+  placeholder="{{ form.placeholder }}"
+  {{ form.attributes|raw }}
+  :tree-default-expand-all="{{ form.expandAll ? 'true' : 'false' }}"
+  {% if not form.vModel %}
+    v-decorator="['{{ form.key }}', { {{ initial }} rules: {{ form.formRules }} }]"
+  {% else %}
+    v-model="{{ form.vModel }}"
+  {% endif %}
+></a-tree-select>

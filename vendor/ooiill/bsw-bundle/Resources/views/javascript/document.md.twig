@@ -1,0 +1,41 @@
+{% block documentJavascript %}
+bsw.configure({
+    data: {
+        documentIndexCol: 5,
+        documentMenuCollapsed: bsw.isMobile(),
+    },
+    method: {
+        documentRender(f5) {
+            let theAnchor = bsw.getAnchor();
+            $('.index > ul > a').removeClass('current');
+            if (theAnchor.length) {
+                let currentLink = $(`#index-${theAnchor}`);
+                if (currentLink.length) {
+                    currentLink.addClass('current');
+                    if (f5) {
+                        $('.markdown-content .index').scrollTop(currentLink[0].offsetTop - 5);
+                    }
+                }
+                let currentMd = $(`#${theAnchor}`);
+                if (currentMd.length) {
+                    $('.markdown-content .content').scrollTop(currentMd[0].offsetTop - 12);
+                }
+            }
+            setTimeout(() => bsw.prominentAnchor(), 50)
+        },
+        documentMenuTrigger() {
+            this.documentMenuCollapsed = !this.documentMenuCollapsed
+        },
+    },
+    logic: {
+        documentInit(v) {
+            setTimeout(() =>  v.documentRender(true), 10);
+        },
+        documentListenTheAnchor(v) {
+            window.onhashchange = function () {
+                v.documentRender(false);
+            };
+        },
+    }
+});
+{% endblock %}

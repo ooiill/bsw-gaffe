@@ -1,0 +1,26 @@
+{% extends 'layout/blank.html.twig' %}
+{% set tplScaffoldClass = 'bsw-scaffold-document' %}
+{% set tplContentClass = ['bsw-content-document', tplContentChildrenClass ?? null]|joinClass %}
+
+{% use 'javascript/document.md.twig' %}
+
+{% block loading %}{% endblock %}
+
+{% block page %}
+  {% set md = data.data ?? logic.data.data %}
+  <a-row class="markdown-content">
+    <a-col :span="documentIndexCol" class="index">
+      {{ md.toc|raw }}
+    </a-col>
+    <a-col :span="24 - documentIndexCol" class="content">
+      {{ md.document|raw }}
+      {% block footer %}
+        <footer>{{ md.footer|raw }}</footer>
+      {% endblock %}
+    </a-col>
+  </a-row>
+{% endblock %}
+
+{% block javascript %}
+{{ block('documentJavascript') }}
+{% endblock %}

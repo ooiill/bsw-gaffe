@@ -1,0 +1,44 @@
+{% set scene = logic.scene ?? constant(scaffold.abs ~ '::TAG_UNKNOWN') %}
+<a-mentions
+  {% if form.class %}
+    class="{{ form.class }}"
+  {% endif %}
+  name="{{ form.name }}"
+  :style="{{ form.style }}"
+  {% if scene == constant(scaffold.abs ~ '::TAG_PERSISTENCE') %}
+    :disabled="(typeof persistenceFieldDisabledNow.{{ form.key }} !== 'undefined') ? (persistenceFieldDisabledNow.{{ form.key }} || {{ form.disabled ? 'true' : 'false' }}) : {{ form.disabled ? 'true' : 'false' }}"
+  {% else %}
+    :disabled="{{ form.disabled ? 'true' : 'false' }}"
+  {% endif %}
+  :rows="{{ form.rows }}"
+  {% if form.filterOption %}
+    :filter-option="{{ form.filterOption }}"
+  {% endif %}
+  :data-bsw.prop="{{ form.formData }}"
+  {% if form.varNameForChange %}
+    data-do-change-field="{{ form.varNameForChange }}"
+  {% endif %}
+  {% if form.doLogicRoute %}
+    data-do-logic-api="{{ path(form.doLogicRoute, form.doLogicRouteArgs) }}"
+  {% endif %}
+  {% if form.change %}
+    @change="((value) => {this.{{ form.change }}(value, '{{ form.key }}')})"
+  {% endif %}
+  :auto-focus="{{ form.autoFocus ? 'true' : 'false' }}"
+  placeholder="{{ form.placeholder }}"
+  prefix="{{ form.prefix }}"
+  split="{{ form.separator }}"
+  {{ form.attributes|raw }}
+  {% if not form.vModel %}
+    v-decorator="['{{ form.key }}', { initialValue: `{{ form.value }}`, rules: {{ form.formRules }} }]"
+  {% else %}
+    v-model="{{ form.vModel }}"
+  {% endif %}
+>
+  {% for i in form.optionsArray %}
+    <a-mentions-option value="{{ form.valueTpl|tplReplace({'value': i.value, 'label': i.label}) }}">
+      {{ i.label }}
+    </a-mentions-option>
+  {% endfor %}
+</a-mentions>
+
