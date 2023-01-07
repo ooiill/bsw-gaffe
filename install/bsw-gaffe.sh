@@ -273,7 +273,7 @@ echo APP_ENV=${env} > .env
 
 source ~/.bash_profile
 eval "iload"
-eval "${app}-composer install --ignore-platform-reqs"
+#eval "${app}-composer install --ignore-platform-reqs"
 eval "${app}-sf-bin assets:install"
 eval "${app}-sf-bin cache:clear"
 sudo chown -R ${user}:${user} var
