@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# sudo curl -L "https://raw.githubusercontent.com/ooiill/bsw/master/install/bsw.sh" -o /usr/local/bin/bsw && sudo chmod a+x /usr/local/bin/bsw
+# sudo curl -L "https://raw.githubusercontent.com/ooiill/bsw-gaffe/master/install/bsw-gaffe.sh" -o /usr/local/bin/bsw-gaffe && sudo chmod a+x /usr/local/bin/bsw-gaffe
 
 while [[ "${1}" ]]
 do
@@ -87,7 +87,7 @@ app=${app}
 type=${type}
 env=${env-dev}
 port=${port-$[$RANDOM%50000+20000]}
-git=${git-https://github.com/ooiill/bsw.git}
+git=${git-https://github.com/ooiill/bsw-gaffe.git}
 npm=${npm-yes}
 mode=${mode-create}
 www=${www-app}
@@ -121,12 +121,12 @@ function color()
 }
 
 if [[ "${help}" == "yes" ]]; then
-    color 34 "Usage: bsw [args...]"   "\n\t"
+    color 34 "Usage: bsw-gaffe [args...]"   "\n\t"
     color 32 "--app"            "\t"  "\t\t\t[*] 项目名称"
     color 32 "--type"           "\t"  "\t\t\t[*] 项目类型 [backend|web|api]"
     color 32 "--env"            "\t"  "\t\t\t[ ] 项目环境 [dev|prod] [default:dev]"
     color 32 "--port"           "\t"  "\t\t\t[ ] 服务默认端口数+port, 保持默认端口请设为 0 [default:random(20000,50000)]"
-    color 32 "--git"            "\t"  "\t\t\t[ ] 项目 git 地址 [default:https://github.com/ooiill/bsw.git]"
+    color 32 "--git"            "\t"  "\t\t\t[ ] 项目 git 地址 [default:https://github.com/ooiill/bsw-gaffe.git]"
     color 32 "--npm"            "\t"  "\t\t\t[ ] 是否需要执行 npm install [default:yes]"
     color 32 "--install"        "\t"  "\t\t[-] 标记为 install 模式, 未携带该参数默认为 create 模式"
     color 32 "--www"            "\t"  "\t\t\t[ ] 三级域名名称 [default:app]" "" "\n"
